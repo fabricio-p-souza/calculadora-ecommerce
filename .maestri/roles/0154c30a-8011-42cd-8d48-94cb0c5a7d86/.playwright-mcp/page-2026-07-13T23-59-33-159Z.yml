@@ -1,0 +1,66 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e7]:
+      - img "Pardus" [ref=e8]
+      - generic [ref=e9]: e-commerce partner
+  - main [ref=e10]:
+    - generic [ref=e72]:
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e75]: "2"
+          - heading "Simule o plano de crescimento do seu e-commerce em 2026" [level=2] [ref=e76]
+        - paragraph [ref=e77]: Agora que já temos seus dados, use a calculadora abaixo para entender quanto seu e-commerce precisa crescer em faturamento, pedidos e sessões para atingir sua meta em 2026.
+        - button "← Voltar ao formulário" [ref=e78]
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: Faturamento de 2025 (R$)
+            - 'textbox "Ex: 500000" [ref=e83]': "500000"
+          - generic [ref=e84]:
+            - generic [ref=e85]: Ticket médio atual (R$)
+            - 'textbox "Ex: 250" [ref=e86]': "250"
+          - generic [ref=e87]:
+            - generic [ref=e88]: Taxa de conversão atual (%)
+            - 'textbox "Ex: 1,5" [ref=e89]': 1,5
+          - generic [ref=e90]:
+            - generic [ref=e91]: Meta de faturamento para 2026 (R$)
+            - 'textbox "Ex: 650000" [ref=e92]': "650000"
+        - button "Calcular meu 2026" [active] [ref=e94] [cursor=pointer]
+        - generic [ref=e95]:
+          - heading "Seu plano de crescimento para 2026" [level=3] [ref=e96]
+          - generic [ref=e97]:
+            - generic [ref=e98]:
+              - paragraph [ref=e99]: Faturamento alvo em 2026
+              - paragraph [ref=e100]: R$ 650.000,00
+            - generic [ref=e101]:
+              - paragraph [ref=e102]: Pedidos estimados em 2025
+              - paragraph [ref=e103]: 2.000 pedidos
+            - generic [ref=e104]:
+              - paragraph [ref=e105]: Pedidos necessários em 2026
+              - paragraph [ref=e106]: 2.600 pedidos
+            - generic [ref=e107]:
+              - paragraph [ref=e108]: Sessões estimadas em 2025
+              - paragraph [ref=e109]: 133.334 sessões
+            - generic [ref=e110]:
+              - paragraph [ref=e111]: Sessões necessárias em 2026
+              - paragraph [ref=e112]: 173.334 sessões
+            - generic [ref=e113]:
+              - paragraph [ref=e114]: Crescimento de sessões necessário
+              - paragraph [ref=e115]: +30,0%
+          - paragraph [ref=e117]:
+            - text: Para atingir sua meta de faturamento de R$ 650.000,00 em 2026 (crescimento de
+            - generic [ref=e118]: 30,0%
+            - text: ), seu e-commerce precisa gerar cerca de
+            - generic [ref=e119]: 2.600 pedidos
+            - text: e alcançar em torno de
+            - generic [ref=e120]: 173.334 sessões
+            - text: no ano, mantendo a mesma taxa de conversão atual.
+    - generic [ref=e60]:
+      - heading "Planejamento feito para quem já vende online" [level=2] [ref=e61]
+      - paragraph [ref=e62]: Esta calculadora foi criada para e-commerces com site e checkout ativo. Se você ainda vende apenas em loja física ou só por canais manuais, use estes números como referência para o momento em que sua operação online estiver estruturada.
+  - contentinfo [ref=e63]:
+    - generic [ref=e65]:
+      - generic [ref=e66]:
+        - img "Pardus" [ref=e67]
+        - generic [ref=e68]: e-commerce partner
+      - paragraph [ref=e69]: © 2026 Pardus. Todos os direitos reservados.

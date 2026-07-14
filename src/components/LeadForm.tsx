@@ -23,40 +23,45 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
       <div className="max-w-6xl mx-auto px-4 grid gap-10 lg:grid-cols-2 items-start">
         <div className="space-y-6 animate-fade-in">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
-            Planeje seu 2026 como um{" "}
-            <span className="text-gradient">e-commerce profissional</span>
+            A <span className="text-gradient">Black Friday</span> não vai salvar um
+            planejamento ruim.
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
-            Descubra, em poucos minutos, quanto o seu e-commerce precisa crescer em
-            faturamento, pedidos e sessões para bater as metas de 2026 — sem depender só
-            de datas sazonais.
+            Descubra quanto o seu e-commerce precisa crescer em faturamento, pedidos e
+            tráfego para aproveitar os meses mais importantes de 2026.
           </p>
           <ul className="space-y-4 text-muted-foreground">
             <li className="flex items-start gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center mt-0.5">
                 <span className="w-2 h-2 rounded-full bg-primary" />
               </span>
-              <span>Entenda se sua meta faz sentido para a realidade atual do seu e-commerce</span>
+              <span>Entenda se a sua meta de faturamento é realmente alcançável.</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center mt-0.5">
                 <span className="w-2 h-2 rounded-full bg-primary" />
               </span>
-              <span>Veja se precisa focar mais em tráfego, conversão ou ticket médio</span>
+              <span>
+                Descubra se o foco da sua estratégia deve ser em tráfego, conversão ou
+                ticket médio.
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center mt-0.5">
                 <span className="w-2 h-2 rounded-full bg-primary" />
               </span>
-              <span>Prepare seu planejamento com meses de antecedência</span>
+              <span>
+                Tome decisões baseadas em dados e chegue mais preparado para a Black
+                Friday e o fim do ano.
+              </span>
             </li>
           </ul>
           <div className="mt-6 p-4 bg-secondary/50 rounded-lg border border-border/50">
-            <p className="text-sm font-medium text-foreground mb-2">Como funciona:</p>
+            <p className="text-sm font-medium text-foreground mb-2">Como funciona</p>
             <ol className="text-sm text-muted-foreground space-y-1.5 list-decimal list-inside">
-              <li>Informe seu faturamento de 2025 e dados atuais</li>
-              <li>Defina sua meta de faturamento para 2026</li>
-              <li>Veja quantos pedidos e sessões você precisa alcançar</li>
+              <li>Informe o faturamento dos seus últimos 3 meses.</li>
+              <li>Defina sua meta de faturamento para o restante do ano.</li>
+              <li>Receba um plano com os indicadores necessários para atingir sua meta.</li>
             </ol>
           </div>
         </div>

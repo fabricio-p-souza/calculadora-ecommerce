@@ -14,11 +14,6 @@ interface Resultado {
   metaCrescimentoPercent: number;
 }
 
-const parseNumero = (valor: string): number => {
-  const limpo = valor.replace(/\s/g, "").replace(",", ".");
-  return parseFloat(limpo) || 0;
-};
-
 const formatarMoeda = (valor: number): string =>
   new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -32,6 +27,35 @@ const formatarInteiro = (valor: number): string =>
 
 const formatarPercentual = (valor: number): string => valor.toFixed(1).replace(".", ",");
 
+// Converte o texto digitado livremente (com vírgula ou ponto decimal) em número
+const paraNumero = (valor: string): number => {
+  let limpo = valor.replace(/R\$\s?/g, "").replace(/%/g, "").trim();
+  if (limpo.includes(",")) {
+    limpo = limpo.replace(/\./g, "").replace(",", ".");
+  }
+  return parseFloat(limpo) || 0;
+};
+
+// Deixa o número visível para edição, sem símbolos, mantendo a vírgula decimal
+const paraEdicao = (valor: string): string => {
+  const numero = paraNumero(valor);
+  if (!numero) return "";
+  return numero.toString().replace(".", ",");
+};
+
+// Aplica a formatação final (R$ ou %) quando o campo perde o foco
+const finalizarMoeda = (valor: string): string => {
+  const numero = paraNumero(valor);
+  if (!numero) return "";
+  return formatarMoeda(numero);
+};
+
+const finalizarPercentual = (valor: string): string => {
+  const numero = paraNumero(valor);
+  if (!numero) return "";
+  return `${numero.toString().replace(".", ",")}%`;
+};
+
 export function Calculator({ onReset }: CalculatorProps) {
   const [faturamento2025, setFaturamento2025] = useState("");
   const [ticketMedio, setTicketMedio] = useState("");
@@ -40,10 +64,10 @@ export function Calculator({ onReset }: CalculatorProps) {
   const [resultado, setResultado] = useState<Resultado | null>(null);
 
   const calcular = () => {
-    const faturamento = parseNumero(faturamento2025);
-    const ticket = parseNumero(ticketMedio);
-    const conversao = parseNumero(taxaConversao);
-    const meta = parseNumero(metaFaturamento2026);
+    const faturamento = paraNumero(faturamento2025);
+    const ticket = paraNumero(ticketMedio);
+    const conversao = paraNumero(taxaConversao);
+    const meta = paraNumero(metaFaturamento2026);
 
     if (faturamento <= 0 || ticket <= 0 || conversao <= 0 || meta <= 0) return;
 
@@ -94,15 +118,17 @@ export function Calculator({ onReset }: CalculatorProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Faturamento de 2025 (R$)
+                  Faturamento dos últimos 3 meses (R$)
                 </label>
                 <input
                   type="text"
                   inputMode="decimal"
                   className="input-field"
-                  placeholder="Ex: 500000"
+                  placeholder="Ex: 90000"
                   value={faturamento2025}
                   onChange={(e) => setFaturamento2025(e.target.value)}
+                  onFocus={(e) => setFaturamento2025(paraEdicao(e.target.value))}
+                  onBlur={(e) => setFaturamento2025(finalizarMoeda(e.target.value))}
                 />
               </div>
               <div>
@@ -116,6 +142,8 @@ export function Calculator({ onReset }: CalculatorProps) {
                   placeholder="Ex: 250"
                   value={ticketMedio}
                   onChange={(e) => setTicketMedio(e.target.value)}
+                  onFocus={(e) => setTicketMedio(paraEdicao(e.target.value))}
+                  onBlur={(e) => setTicketMedio(finalizarMoeda(e.target.value))}
                 />
               </div>
               <div>
@@ -129,11 +157,13 @@ export function Calculator({ onReset }: CalculatorProps) {
                   placeholder="Ex: 1,5"
                   value={taxaConversao}
                   onChange={(e) => setTaxaConversao(e.target.value)}
+                  onFocus={(e) => setTaxaConversao(paraEdicao(e.target.value))}
+                  onBlur={(e) => setTaxaConversao(finalizarPercentual(e.target.value))}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Meta de faturamento para 2026 (R$)
+                  Meta de faturamento até dezembro (R$)
                 </label>
                 <input
                   type="text"
@@ -142,6 +172,8 @@ export function Calculator({ onReset }: CalculatorProps) {
                   placeholder="Ex: 650000"
                   value={metaFaturamento2026}
                   onChange={(e) => setMetaFaturamento2026(e.target.value)}
+                  onFocus={(e) => setMetaFaturamento2026(paraEdicao(e.target.value))}
+                  onBlur={(e) => setMetaFaturamento2026(finalizarMoeda(e.target.value))}
                 />
               </div>
             </div>

@@ -7,7 +7,6 @@ interface LeadFormProps {
 export function LeadForm({ onFormSuccess }: LeadFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [company, setCompany] = useState("");
   const [website, setWebsite] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
 
@@ -20,7 +19,7 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
 
   return (
     <section className="w-full py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-background to-secondary/30">
-      <div className="max-w-6xl mx-auto px-4 grid gap-10 lg:grid-cols-2 items-start">
+      <div className="section-container grid gap-10 lg:grid-cols-2 items-start">
         <div className="space-y-6 animate-fade-in">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
             A <span className="text-gradient">Black Friday</span> não vai salvar um
@@ -69,7 +68,7 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
         <div className="animate-slide-up" style={{ animationDelay: "0.2s" }}>
           <div className="bg-card border border-border rounded-xl shadow-md p-6 sm:p-8">
             <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3">
-              Acesse a calculadora de crescimento 2026
+              Acesse a calculadora de crescimento
             </h2>
             <p className="text-muted-foreground mb-6">
               Preencha seus dados para receber o acesso à calculadora e começar a testar
@@ -106,28 +105,14 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
                 />
               </div>
               <div>
-                <label htmlFor="company" className="block text-sm font-medium text-foreground mb-2">
-                  Empresa*
-                </label>
-                <input
-                  id="company"
-                  type="text"
-                  className="input-field"
-                  placeholder="Empresa *"
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
                 <label htmlFor="website" className="block text-sm font-medium text-foreground mb-2">
-                  Website*
+                  Link do Site*
                 </label>
                 <input
                   id="website"
                   type="text"
                   className="input-field"
-                  placeholder="Website *"
+                  placeholder="Link do Site *"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
                   required
@@ -135,13 +120,13 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
               </div>
               <div>
                 <label htmlFor="whatsapp" className="block text-sm font-medium text-foreground mb-2">
-                  WhatsApp Comercial*
+                  WhatsApp*
                 </label>
                 <input
                   id="whatsapp"
                   type="text"
                   className="input-field"
-                  placeholder="WhatsApp Comercial *"
+                  placeholder="WhatsApp *"
                   value={whatsapp}
                   onChange={(e) => setWhatsapp(e.target.value)}
                   required
@@ -158,10 +143,6 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
               </p>
             </form>
           </div>
-          <p className="text-sm text-muted-foreground mt-4 text-center lg:text-left">
-            Feito exclusivamente para quem já tem loja online com site e checkout ativo.
-            Não é indicado para negócios apenas físicos ou vendas totalmente manuais.
-          </p>
         </div>
       </div>
     </section>

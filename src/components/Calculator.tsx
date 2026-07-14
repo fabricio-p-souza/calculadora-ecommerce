@@ -72,12 +72,9 @@ export function Calculator({ onReset }: CalculatorProps) {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10 sm:mb-14 animate-fade-in">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <span className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground font-bold">
-                2
-              </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
-                Simule o plano de crescimento do seu e-commerce em{" "}
-                <span className="text-gradient">2026</span>
+                Simule o plano de{" "}
+                <span className="text-gradient">crescimento</span> do seu e-commerce
               </h2>
             </div>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

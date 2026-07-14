@@ -104,7 +104,7 @@ export function Calculator({ onReset }: CalculatorProps) {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Agora que já temos seus dados, use a calculadora abaixo para entender
               quanto seu e-commerce precisa crescer em faturamento, pedidos e sessões
-              para atingir sua meta em 2026.
+              para atingir suas metas.
             </p>
             <button
               onClick={onReset}
@@ -187,38 +187,38 @@ export function Calculator({ onReset }: CalculatorProps) {
             {resultado && (
               <div className="mt-10 pt-10 border-t border-border animate-fade-in">
                 <h3 className="text-xl font-bold text-foreground mb-6 text-center">
-                  Seu plano de crescimento para 2026
+                  Seu plano de crescimento
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                   <div className="result-card">
-                    <p className="text-sm text-muted-foreground mb-1">Faturamento alvo em 2026</p>
+                    <p className="text-sm text-muted-foreground mb-1">Faturamento alvo</p>
                     <p className="text-2xl font-bold text-primary">
                       {formatarMoeda(resultado.faturamentoAlvo2026)}
                     </p>
                   </div>
                   <div className="result-card">
-                    <p className="text-sm text-muted-foreground mb-1">Pedidos estimados em 2025</p>
+                    <p className="text-sm text-muted-foreground mb-1">Pedidos estimados últimos 3 meses</p>
                     <p className="text-2xl font-bold text-foreground">
                       {formatarInteiro(resultado.pedidos2025)}{" "}
                       <span className="text-base font-normal">pedidos</span>
                     </p>
                   </div>
                   <div className="result-card">
-                    <p className="text-sm text-muted-foreground mb-1">Pedidos necessários em 2026</p>
+                    <p className="text-sm text-muted-foreground mb-1">Pedidos necessários para meta</p>
                     <p className="text-2xl font-bold text-primary">
                       {formatarInteiro(resultado.pedidos2026)}{" "}
                       <span className="text-base font-normal">pedidos</span>
                     </p>
                   </div>
                   <div className="result-card">
-                    <p className="text-sm text-muted-foreground mb-1">Sessões estimadas em 2025</p>
+                    <p className="text-sm text-muted-foreground mb-1">Sessões estimadas últimas 3 meses</p>
                     <p className="text-2xl font-bold text-foreground">
                       {formatarInteiro(resultado.sessoes2025)}{" "}
                       <span className="text-base font-normal">sessões</span>
                     </p>
                   </div>
                   <div className="result-card">
-                    <p className="text-sm text-muted-foreground mb-1">Sessões necessárias em 2026</p>
+                    <p className="text-sm text-muted-foreground mb-1">Sessões necessárias até dezembro</p>
                     <p className="text-2xl font-bold text-primary">
                       {formatarInteiro(resultado.sessoes2026)}{" "}
                       <span className="text-base font-normal">sessões</span>
@@ -240,7 +240,7 @@ export function Calculator({ onReset }: CalculatorProps) {
                     <span className="font-semibold text-primary">
                       {formatarMoeda(resultado.faturamentoAlvo2026)}
                     </span>{" "}
-                    em 2026 (crescimento de{" "}
+                    (crescimento de{" "}
                     <span className="font-semibold text-primary">
                       {formatarPercentual(resultado.metaCrescimentoPercent)}%
                     </span>
@@ -252,7 +252,7 @@ export function Calculator({ onReset }: CalculatorProps) {
                     <span className="font-semibold text-primary">
                       {formatarInteiro(resultado.sessoes2026)} sessões
                     </span>{" "}
-                    no ano, mantendo a mesma taxa de conversão atual.
+                    até dezembro, mantendo a mesma taxa de conversão atual.
                   </p>
                 </div>
               </div>

@@ -5,11 +5,11 @@ interface CalculatorProps {
 }
 
 interface Resultado {
-  faturamentoAlvo2026: number;
-  pedidos2025: number;
-  pedidos2026: number;
-  sessoes2025: number;
-  sessoes2026: number;
+  faturamentoAlvo: number;
+  pedidosTrimestre: number;
+  pedidosMeta: number;
+  sessoesTrimestre: number;
+  sessoesMeta: number;
   crescimentoSessoesPercent: number;
   metaCrescimentoPercent: number;
   faturamentoMensalAtual: number;
@@ -38,6 +38,9 @@ const paraNumero = (valor: string): number => {
   let limpo = valor.replace(/R\$\s?/g, "").replace(/%/g, "").trim();
   if (limpo.includes(",")) {
     limpo = limpo.replace(/\./g, "").replace(",", ".");
+  } else if (/^\d{1,3}(\.\d{3})+$/.test(limpo)) {
+    // Sem vírgula, pontos em grupos de 3 dígitos: separador de milhar (ex: "90.000")
+    limpo = limpo.replace(/\./g, "");
   }
   return parseFloat(limpo) || 0;
 };
@@ -63,44 +66,50 @@ const finalizarPercentual = (valor: string): string => {
 };
 
 export function Calculator({ onReset }: CalculatorProps) {
-  const [faturamento2025, setFaturamento2025] = useState("");
+  const [faturamentoTrimestre, setFaturamentoTrimestre] = useState("");
   const [ticketMedio, setTicketMedio] = useState("");
   const [taxaConversao, setTaxaConversao] = useState("");
-  const [metaFaturamento2026, setMetaFaturamento2026] = useState("");
+  const [metaFaturamento, setMetaFaturamento] = useState("");
   const [resultado, setResultado] = useState<Resultado | null>(null);
+  const [erro, setErro] = useState("");
 
   const calcular = () => {
-    const faturamento = paraNumero(faturamento2025);
+    const faturamento = paraNumero(faturamentoTrimestre);
     const ticket = paraNumero(ticketMedio);
     const conversao = paraNumero(taxaConversao);
-    const meta = paraNumero(metaFaturamento2026);
+    const meta = paraNumero(metaFaturamento);
 
-    if (faturamento <= 0 || ticket <= 0 || conversao <= 0 || meta <= 0) return;
+    if (faturamento <= 0 || ticket <= 0 || conversao <= 0 || meta <= 0) {
+      setErro("Preencha todos os campos com valores maiores que zero para calcular.");
+      setResultado(null);
+      return;
+    }
+    setErro("");
 
     const taxaConversaoDecimal = conversao / 100;
     const metaCrescimentoPercent = ((meta - faturamento) / faturamento) * 100;
-    const pedidos2025 = faturamento / ticket;
-    const pedidos2026 = meta / ticket;
-    const sessoes2025 = pedidos2025 / taxaConversaoDecimal;
-    const sessoes2026 = pedidos2026 / taxaConversaoDecimal;
-    const crescimentoSessoesPercent = ((sessoes2026 - sessoes2025) / sessoes2025) * 100;
+    const pedidosTrimestre = faturamento / ticket;
+    const pedidosMeta = meta / ticket;
+    const sessoesTrimestre = pedidosTrimestre / taxaConversaoDecimal;
+    const sessoesMeta = pedidosMeta / taxaConversaoDecimal;
+    const crescimentoSessoesPercent = ((sessoesMeta - sessoesTrimestre) / sessoesTrimestre) * 100;
 
     const faturamentoMensalAtual = faturamento / 3;
     const faturamentoMensalMeta = meta / 5;
     const crescimentoMensalPercent =
       ((faturamentoMensalMeta - faturamentoMensalAtual) / faturamentoMensalAtual) * 100;
 
-    const sessoesMensalAtual = sessoes2025 / 3;
-    const sessoesMensalMeta = sessoes2026 / 5;
+    const sessoesMensalAtual = sessoesTrimestre / 3;
+    const sessoesMensalMeta = sessoesMeta / 5;
     const crescimentoSessoesMensalPercent =
       ((sessoesMensalMeta - sessoesMensalAtual) / sessoesMensalAtual) * 100;
 
     setResultado({
-      faturamentoAlvo2026: meta,
-      pedidos2025,
-      pedidos2026,
-      sessoes2025,
-      sessoes2026,
+      faturamentoAlvo: meta,
+      pedidosTrimestre,
+      pedidosMeta,
+      sessoesTrimestre,
+      sessoesMeta,
       crescimentoSessoesPercent,
       metaCrescimentoPercent,
       faturamentoMensalAtual,
@@ -139,25 +148,27 @@ export function Calculator({ onReset }: CalculatorProps) {
           <div className="card-elevated p-6 sm:p-8 lg:p-10 animate-slide-up" style={{ animationDelay: "0.2s" }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label htmlFor="faturamento-trimestre" className="block text-sm font-medium text-foreground mb-2">
                   Faturamento dos últimos 3 meses (R$)
                 </label>
                 <input
+                  id="faturamento-trimestre"
                   type="text"
                   inputMode="decimal"
                   className="input-field"
                   placeholder="Ex: 90000"
-                  value={faturamento2025}
-                  onChange={(e) => setFaturamento2025(e.target.value)}
-                  onFocus={(e) => setFaturamento2025(paraEdicao(e.target.value))}
-                  onBlur={(e) => setFaturamento2025(finalizarMoeda(e.target.value))}
+                  value={faturamentoTrimestre}
+                  onChange={(e) => setFaturamentoTrimestre(e.target.value)}
+                  onFocus={(e) => setFaturamentoTrimestre(paraEdicao(e.target.value))}
+                  onBlur={(e) => setFaturamentoTrimestre(finalizarMoeda(e.target.value))}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label htmlFor="ticket-medio" className="block text-sm font-medium text-foreground mb-2">
                   Ticket médio atual (R$)
                 </label>
                 <input
+                  id="ticket-medio"
                   type="text"
                   inputMode="decimal"
                   className="input-field"
@@ -169,10 +180,11 @@ export function Calculator({ onReset }: CalculatorProps) {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label htmlFor="taxa-conversao" className="block text-sm font-medium text-foreground mb-2">
                   Taxa de conversão atual (%)
                 </label>
                 <input
+                  id="taxa-conversao"
                   type="text"
                   inputMode="decimal"
                   className="input-field"
@@ -184,18 +196,19 @@ export function Calculator({ onReset }: CalculatorProps) {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
+                <label htmlFor="meta-faturamento" className="block text-sm font-medium text-foreground mb-2">
                   Meta de faturamento até dezembro (R$)
                 </label>
                 <input
+                  id="meta-faturamento"
                   type="text"
                   inputMode="decimal"
                   className="input-field"
                   placeholder="Ex: 650000"
-                  value={metaFaturamento2026}
-                  onChange={(e) => setMetaFaturamento2026(e.target.value)}
-                  onFocus={(e) => setMetaFaturamento2026(paraEdicao(e.target.value))}
-                  onBlur={(e) => setMetaFaturamento2026(finalizarMoeda(e.target.value))}
+                  value={metaFaturamento}
+                  onChange={(e) => setMetaFaturamento(e.target.value)}
+                  onFocus={(e) => setMetaFaturamento(paraEdicao(e.target.value))}
+                  onBlur={(e) => setMetaFaturamento(finalizarMoeda(e.target.value))}
                 />
               </div>
             </div>
@@ -204,6 +217,9 @@ export function Calculator({ onReset }: CalculatorProps) {
               <button onClick={calcular} className="btn-primary w-full sm:w-auto">
                 Calcular
               </button>
+              {erro && (
+                <p className="mt-4 text-sm text-primary font-medium">{erro}</p>
+              )}
             </div>
 
             {resultado && (
@@ -215,40 +231,40 @@ export function Calculator({ onReset }: CalculatorProps) {
                   <div className="result-card">
                     <p className="text-sm text-muted-foreground mb-1">Faturamento alvo</p>
                     <p className="text-2xl font-bold text-primary">
-                      {formatarMoeda(resultado.faturamentoAlvo2026)}
+                      {formatarMoeda(resultado.faturamentoAlvo)}
                     </p>
                   </div>
                   <div className="result-card">
                     <p className="text-sm text-muted-foreground mb-1">Pedidos estimados últimos 3 meses</p>
                     <p className="text-2xl font-bold text-foreground">
-                      {formatarInteiro(resultado.pedidos2025)}{" "}
+                      {formatarInteiro(resultado.pedidosTrimestre)}{" "}
                       <span className="text-base font-normal">pedidos</span>
                     </p>
                   </div>
                   <div className="result-card">
                     <p className="text-sm text-muted-foreground mb-1">Pedidos necessários para meta</p>
                     <p className="text-2xl font-bold text-primary">
-                      {formatarInteiro(resultado.pedidos2026)}{" "}
+                      {formatarInteiro(resultado.pedidosMeta)}{" "}
                       <span className="text-base font-normal">pedidos</span>
                     </p>
                   </div>
                   <div className="result-card">
                     <p className="text-sm text-muted-foreground mb-1">Sessões estimadas últimas 3 meses</p>
                     <p className="text-2xl font-bold text-foreground">
-                      {formatarInteiro(resultado.sessoes2025)}{" "}
+                      {formatarInteiro(resultado.sessoesTrimestre)}{" "}
                       <span className="text-base font-normal">sessões</span>
                     </p>
                   </div>
                   <div className="result-card">
                     <p className="text-sm text-muted-foreground mb-1">Sessões necessárias até dezembro</p>
                     <p className="text-2xl font-bold text-primary">
-                      {formatarInteiro(resultado.sessoes2026)}{" "}
+                      {formatarInteiro(resultado.sessoesMeta)}{" "}
                       <span className="text-base font-normal">sessões</span>
                     </p>
                   </div>
                   <div className="result-card bg-primary/10 border-primary/20">
                     <p className="text-sm text-muted-foreground mb-1">
-                      Crescimento de sessões necessário
+                      Crescimento total do período
                     </p>
                     <p className="text-2xl font-bold text-primary">
                       +{formatarPercentual(resultado.crescimentoSessoesPercent)}%
@@ -260,19 +276,19 @@ export function Calculator({ onReset }: CalculatorProps) {
                   <p className="text-foreground leading-relaxed">
                     Para atingir sua meta de faturamento de{" "}
                     <span className="font-semibold text-primary">
-                      {formatarMoeda(resultado.faturamentoAlvo2026)}
+                      {formatarMoeda(resultado.faturamentoAlvo)}
                     </span>{" "}
                     (crescimento de{" "}
                     <span className="font-semibold text-primary">
                       {formatarPercentual(resultado.metaCrescimentoPercent)}%
-                    </span>
-                    ), seu e-commerce precisa gerar cerca de{" "}
+                    </span>{" "}
+                    sobre os últimos 3 meses), seu e-commerce precisa gerar cerca de{" "}
                     <span className="font-semibold text-primary">
-                      {formatarInteiro(resultado.pedidos2026)} pedidos
+                      {formatarInteiro(resultado.pedidosMeta)} pedidos
                     </span>{" "}
                     e alcançar em torno de{" "}
                     <span className="font-semibold text-primary">
-                      {formatarInteiro(resultado.sessoes2026)} sessões
+                      {formatarInteiro(resultado.sessoesMeta)} sessões
                     </span>{" "}
                     até dezembro, mantendo a mesma taxa de conversão atual.
                   </p>

@@ -84,7 +84,7 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
                   id="name"
                   type="text"
                   className="input-field"
-                  placeholder="Nome *"
+                  placeholder="Seu nome"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -98,7 +98,7 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
                   id="email"
                   type="email"
                   className="input-field"
-                  placeholder="Email *"
+                  placeholder="seu@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -112,7 +112,7 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
                   id="website"
                   type="text"
                   className="input-field"
-                  placeholder="Link do Site *"
+                  placeholder="www.sualoja.com.br"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
                   required
@@ -125,8 +125,9 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
                 <input
                   id="whatsapp"
                   type="text"
+                  inputMode="tel"
                   className="input-field"
-                  placeholder="WhatsApp *"
+                  placeholder="(11) 99999-9999"
                   value={whatsapp}
                   onChange={(e) => setWhatsapp(e.target.value)}
                   required

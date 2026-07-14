@@ -12,6 +12,12 @@ interface Resultado {
   sessoes2026: number;
   crescimentoSessoesPercent: number;
   metaCrescimentoPercent: number;
+  faturamentoMensalAtual: number;
+  faturamentoMensalMeta: number;
+  crescimentoMensalPercent: number;
+  sessoesMensalAtual: number;
+  sessoesMensalMeta: number;
+  crescimentoSessoesMensalPercent: number;
 }
 
 const formatarMoeda = (valor: number): string =>
@@ -79,6 +85,16 @@ export function Calculator({ onReset }: CalculatorProps) {
     const sessoes2026 = pedidos2026 / taxaConversaoDecimal;
     const crescimentoSessoesPercent = ((sessoes2026 - sessoes2025) / sessoes2025) * 100;
 
+    const faturamentoMensalAtual = faturamento / 3;
+    const faturamentoMensalMeta = meta / 5;
+    const crescimentoMensalPercent =
+      ((faturamentoMensalMeta - faturamentoMensalAtual) / faturamentoMensalAtual) * 100;
+
+    const sessoesMensalAtual = sessoes2025 / 3;
+    const sessoesMensalMeta = sessoes2026 / 5;
+    const crescimentoSessoesMensalPercent =
+      ((sessoesMensalMeta - sessoesMensalAtual) / sessoesMensalAtual) * 100;
+
     setResultado({
       faturamentoAlvo2026: meta,
       pedidos2025,
@@ -87,6 +103,12 @@ export function Calculator({ onReset }: CalculatorProps) {
       sessoes2026,
       crescimentoSessoesPercent,
       metaCrescimentoPercent,
+      faturamentoMensalAtual,
+      faturamentoMensalMeta,
+      crescimentoMensalPercent,
+      sessoesMensalAtual,
+      sessoesMensalMeta,
+      crescimentoSessoesMensalPercent,
     });
   };
 
@@ -180,7 +202,7 @@ export function Calculator({ onReset }: CalculatorProps) {
 
             <div className="text-center">
               <button onClick={calcular} className="btn-primary w-full sm:w-auto">
-                Calcular meu 2026
+                Calcular
               </button>
             </div>
 
@@ -253,6 +275,36 @@ export function Calculator({ onReset }: CalculatorProps) {
                       {formatarInteiro(resultado.sessoes2026)} sessões
                     </span>{" "}
                     até dezembro, mantendo a mesma taxa de conversão atual.
+                  </p>
+                  <p className="text-foreground leading-relaxed mt-4">
+                    Nos últimos 3 meses, seu e-commerce faturou em média{" "}
+                    <span className="font-semibold text-primary">
+                      {formatarMoeda(resultado.faturamentoMensalAtual)}
+                    </span>{" "}
+                    por mês. Para atingir sua meta, você precisa faturar cerca de{" "}
+                    <span className="font-semibold text-primary">
+                      {formatarMoeda(resultado.faturamentoMensalMeta)}
+                    </span>{" "}
+                    por mês até dezembro, um crescimento de{" "}
+                    <span className="font-semibold text-primary">
+                      {formatarPercentual(resultado.crescimentoMensalPercent)}%
+                    </span>{" "}
+                    ao mês.
+                  </p>
+                  <p className="text-foreground leading-relaxed mt-4">
+                    Em sessões, você teve em média{" "}
+                    <span className="font-semibold text-primary">
+                      {formatarInteiro(resultado.sessoesMensalAtual)} sessões
+                    </span>{" "}
+                    por mês nos últimos 3 meses. Para atingir sua meta, você precisa chegar a cerca de{" "}
+                    <span className="font-semibold text-primary">
+                      {formatarInteiro(resultado.sessoesMensalMeta)} sessões
+                    </span>{" "}
+                    por mês até dezembro, um crescimento de{" "}
+                    <span className="font-semibold text-primary">
+                      {formatarPercentual(resultado.crescimentoSessoesMensalPercent)}%
+                    </span>{" "}
+                    ao mês.
                   </p>
                 </div>
               </div>

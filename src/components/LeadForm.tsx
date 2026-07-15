@@ -84,8 +84,9 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
       <div className="section-container grid gap-10 lg:grid-cols-2 items-start">
         <div className="space-y-6 animate-fade-in">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
-            A <span className="text-gradient">Black Friday</span> não vai salvar um
-            planejamento ruim.
+            Planeje o{" "}
+            <span className="text-gradient">crescimento</span> do seu
+            e-commerce ainda em 2026
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed">
             Descubra quanto o seu e-commerce precisa crescer em faturamento, pedidos e

@@ -12,8 +12,21 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Sem CRM integrado: apenas libera a calculadora localmente.
-    // Para capturar leads de verdade, plugue aqui seu RD Station, HubSpot ou webhook.
+
+    const webhookUrl = import.meta.env.VITE_SHEETS_WEBHOOK_URL;
+    if (webhookUrl) {
+      const body = new URLSearchParams({
+        nome: name,
+        email,
+        site: website,
+        whatsapp,
+        faturamento: "",
+        origem: "calculadora-pardus",
+        page_url: window.location.href,
+      });
+      fetch(webhookUrl, { method: "POST", mode: "no-cors", body }).catch(() => {});
+    }
+
     onFormSuccess();
   };
 
@@ -133,7 +146,6 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
                   required
                 />
               </div>
-
               <button type="submit" className="btn-primary w-full">
                 Acesse a calculadora!
               </button>

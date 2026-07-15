@@ -1,17 +1,58 @@
 import { useState, type FormEvent } from "react";
 
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
+
 interface LeadFormProps {
   onFormSuccess: () => void;
 }
+
+const NAME_REGEX = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{2,}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SITE_REGEX = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9À-ÖØ-öø-ÿ-]+(\.[a-zA-Z0-9À-ÖØ-öø-ÿ-]+)+(\/[^\s]*)?$/;
+
+// Remove tudo que não for letra/espaço enquanto o usuário digita
+const formatarNome = (valor: string): string => valor.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s'-]/g, "");
+
+// Aplica a máscara brasileira de telefone conforme o usuário digita
+const formatarTelefone = (valor: string): string => {
+  const digitos = valor.replace(/\D/g, "").slice(0, 11);
+  if (digitos.length === 0) return "";
+  if (digitos.length <= 2) return `(${digitos}`;
+  if (digitos.length <= 6) return `(${digitos.slice(0, 2)}) ${digitos.slice(2)}`;
+  if (digitos.length <= 10) {
+    return `(${digitos.slice(0, 2)}) ${digitos.slice(2, 6)}-${digitos.slice(6)}`;
+  }
+  return `(${digitos.slice(0, 2)}) ${digitos.slice(2, 7)}-${digitos.slice(7)}`;
+};
 
 export function LeadForm({ onFormSuccess }: LeadFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+  const [erro, setErro] = useState("");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
+    const whatsappDigitos = whatsapp.replace(/\D/g, "");
+    const valido =
+      NAME_REGEX.test(name.trim()) &&
+      EMAIL_REGEX.test(email.trim()) &&
+      SITE_REGEX.test(website.trim()) &&
+      (whatsappDigitos.length === 10 || whatsappDigitos.length === 11);
+
+    if (!valido) {
+      setErro("Confira os campos: nome, e-mail, site e WhatsApp precisam estar no formato correto.");
+      return;
+    }
+    setErro("");
+
+    window.fbq?.("track", "Lead");
 
     const webhookUrl = import.meta.env.VITE_SHEETS_WEBHOOK_URL;
     if (webhookUrl) {
@@ -99,7 +140,9 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
                   className="input-field"
                   placeholder="Seu nome"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setName(formatarNome(e.target.value))}
+                  pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{2,}"
+                  title="Digite apenas letras"
                   required
                 />
               </div>
@@ -127,7 +170,9 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
                   className="input-field"
                   placeholder="www.sualoja.com.br"
                   value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
+                  onChange={(e) => setWebsite(e.target.value.replace(/\s/g, ""))}
+                  pattern="(https?:\/\/)?(www\.)?[a-zA-Z0-9À-ÖØ-öø-ÿ-]+(\.[a-zA-Z0-9À-ÖØ-öø-ÿ-]+)+(\/[^\s]*)?"
+                  title="Digite um endereço de site válido, ex: sualoja.com.br"
                   required
                 />
               </div>
@@ -142,10 +187,18 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
                   className="input-field"
                   placeholder="(11) 99999-9999"
                   value={whatsapp}
-                  onChange={(e) => setWhatsapp(e.target.value)}
+                  onChange={(e) => setWhatsapp(formatarTelefone(e.target.value))}
+                  pattern="\(\d{2}\) \d{4,5}-\d{4}"
+                  title="Digite um telefone válido com DDD"
                   required
                 />
               </div>
+
+              {erro && (
+                <p className="text-sm text-center" style={{ color: "rgb(220,38,38)" }}>
+                  {erro}
+                </p>
+              )}
               <button type="submit" className="btn-primary w-full">
                 Acesse a calculadora!
               </button>

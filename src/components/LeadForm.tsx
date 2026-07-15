@@ -35,9 +35,17 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
   const [website, setWebsite] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [erro, setErro] = useState("");
+  // Honeypot: campo invisível para humanos. Se vier preenchido, é bot.
+  const [empresaHoneypot, setEmpresaHoneypot] = useState("");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
+    // Bot detectado: encerra silenciosamente sem gravar lead nem disparar Pixel.
+    if (empresaHoneypot) {
+      onFormSuccess();
+      return;
+    }
 
     const whatsappDigitos = whatsapp.replace(/\D/g, "");
     const valido =
@@ -191,6 +199,20 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
                   pattern="\(\d{2}\) \d{4,5}-\d{4}"
                   title="Digite um telefone válido com DDD"
                   required
+                />
+              </div>
+
+              {/* Honeypot anti-bot: invisível e fora do fluxo de tab para humanos */}
+              <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+                <label htmlFor="empresa">Empresa</label>
+                <input
+                  id="empresa"
+                  type="text"
+                  name="empresa"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={empresaHoneypot}
+                  onChange={(e) => setEmpresaHoneypot(e.target.value)}
                 />
               </div>
 

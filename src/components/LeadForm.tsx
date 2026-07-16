@@ -83,7 +83,7 @@ export function LeadForm({ onFormSuccess }: LeadFormProps) {
     <section className="w-full py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-background to-secondary/30">
       <div className="section-container grid gap-10 lg:grid-cols-2 items-start">
         <div className="space-y-6 animate-fade-in">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
             Planeje o{" "}
             <span className="text-gradient">crescimento</span> do seu
             e-commerce ainda em 2026
